@@ -37,17 +37,22 @@ function generateSituation() {
 }
 
 function toggleRound() {
-    const startButton = document.getElementById("round-button");
-    const stopButton = document.getElementById("stop-button");
-    if (roundActive) {
-        endRound();
-    } else {
-        startQuiz();
-        startButton.style.display = "none";
-        stopButton.style.display = "inline-block";
-    }
-    roundActive = !roundActive;
-}
+            console.log("toggleRound function called");
+            const startButton = document.getElementById("round-button");
+            const stopButton = document.getElementById("stop-button");
+
+            if (startButton.style.display !== "none") {
+                startButton.style.display = "none";
+                stopButton.style.display = "inline-block";
+                // Add logic to start the round here
+            } else {
+                startButton.style.display = "inline-block";
+                stopButton.style.display = "none";
+                // Add logic to stop the round here
+            }
+        }
+
+
 
 function startQuiz() {
     document.getElementById("situations-list").innerHTML = "";
