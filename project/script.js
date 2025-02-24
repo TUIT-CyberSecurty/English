@@ -21,15 +21,8 @@ let roundTimer;
 let roundActive = false;
 
 function generateSituation() {
-    let availableSituations = situations.filter(s => !usedEmotions.has(s.emotion));
-    if (availableSituations.length === 0) {
-        usedEmotions.clear();
-        availableSituations = situations;
-    }
-
-    const randomIndex = Math.floor(Math.random() * availableSituations.length);
-    const newSituation = availableSituations[randomIndex];
-    usedEmotions.add(newSituation.emotion);
+    const randomIndex = Math.floor(Math.random() * situations.length);
+    const newSituation = situations[randomIndex];
     
     const newSituationElement = document.createElement("p");
     newSituationElement.textContent = newSituation.text;
@@ -37,27 +30,20 @@ function generateSituation() {
 }
 
 function toggleRound() {
-            console.log("toggleRound function called");
-            const startButton = document.getElementById("round-button");
-            const stopButton = document.getElementById("stop-button");
-
-            if (startButton.style.display !== "none") {
-                startButton.style.display = "none";
-                stopButton.style.display = "inline-block";
-                // Add logic to start the round here
-            } else {
-                startButton.style.display = "inline-block";
-                stopButton.style.display = "none";
-                // Add logic to stop the round here
-            }
-        }
-
-
+    const startButton = document.getElementById("round-button");
+    const stopButton = document.getElementById("stop-button");
+    if (roundActive) {
+        endRound();
+    } else {
+        startQuiz();
+        startButton.style.display = "none";
+        stopButton.style.display = "inline-block";
+    }
+    roundActive = !roundActive;
+}
 
 function startQuiz() {
     document.getElementById("situations-list").innerHTML = "";
-    document.getElementById("emotions-list").innerHTML = "";
-    usedEmotions.clear();
     
     generateSituation();
     roundTimer = setInterval(generateSituation, 10000);
@@ -67,13 +53,8 @@ function startQuiz() {
 
 function endRound() {
     clearInterval(roundTimer);
-    const resultsContainer = document.getElementById("emotions-list");
-    resultsContainer.innerHTML = "<h2>Final Emotions:</h2>";
-    usedEmotions.forEach(emotion => {
-        const emotionElement = document.createElement("p");
-        emotionElement.textContent = emotion;
-        resultsContainer.appendChild(emotionElement);
-    });
+    const resultsContainer = document.getElementById("situations-list");
+    resultsContainer.innerHTML = "<h2>Quiz Ended</h2>";
     document.getElementById("round-button").style.display = "inline-block";
     document.getElementById("stop-button").style.display = "none";
     roundActive = false;
