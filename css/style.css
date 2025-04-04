@@ -1,0 +1,492 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* Хедер на всю ширину */
+.menu {
+    background: #333;
+    color: white;
+    padding: 15px;
+    text-align: right; /* Выравниваем меню вправо */
+    position: fixed;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    height: 8%; /* Теперь снова на всю ширину */
+    z-index: 1000;
+}
+/* Общий стиль для меню */
+#nav-links {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw; /* Во весь экран */
+    height: 100vh; /* Во весь экран */
+    background: rgba(0, 0, 0, 0.9); /* Затемненный фон */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Центрируем текст по вертикали */
+    align-items: center; /* Центрируем текст по горизонтали */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1000;
+}
+
+/* Когда меню открыто */
+#nav-links.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Стили для пунктов меню */
+#nav-links li {
+    font-size: 24px;
+    color: white;
+    padding: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#nav-links li:hover {
+    color: #f0a500;
+}
+
+/* Стили для бургер-меню */
+.burger-menu {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    z-index: 1101; /* Делаем бургер поверх всего */
+}
+
+/* Линии бургер-меню */
+.burger-menu span {
+    display: block;
+    width: 100%;
+    height: 5px;
+    background: white;
+    border-radius: 5px;
+    transition: 0.4s;
+}
+
+/* Когда бургер превращается в X */
+.burger-menu.open span:nth-child(1) {
+    transform: translateY(15px) rotate(45deg);
+}
+
+.burger-menu.open span:nth-child(2) {
+    opacity: 0; /* Скрываем среднюю линию */
+}
+
+.burger-menu.open span:nth-child(3) {
+    transform: translateY(-15px) rotate(-45deg);
+}
+
+/* Делаем бургер белым, когда меню открыто */
+.burger-menu.open span {
+    background: white;
+}
+
+/* Опускаем контент, чтобы не прилипал к верху */
+main {
+    padding-top: 70px; /* Подогнали под фиксированный хедер */
+}
+
+/* Контентные страницы */
+.page {
+    display: none;
+    padding: 20px;
+}
+
+.active {
+    display: block;
+}
+
+/* Стили для поля ввода */
+.word-input {
+    font-size: 24px;
+    padding: 10px;
+    width: 250px;
+    text-transform: uppercase;
+    text-align: center;
+    margin: 15px;
+    border: 2px solid #444;
+    border-radius: 5px;
+}
+
+/* Красивая кнопка */
+.word-button {
+    font-size: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.word-button:hover {
+    background: #0056b3;
+}
+
+/* Сообщения об ошибках и результатах */
+.word-message {
+    font-size: 20px;
+    margin-top: 10px;
+    color: red;
+    font-weight: bold;
+}
+
+/* Блок с результатами */
+.word-results {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Ряд букв */
+.word-row {
+    display: flex;
+    justify-content: center;
+    margin: 5px 0;
+}
+
+/* Буквы теперь в квадрате */
+.word-letter {
+    font-size: 32px;
+    font-weight: bold;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid black;
+    margin: 3px;
+    color: white;
+    text-transform: uppercase;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Цвета для правильных, частично правильных и неправильных букв */
+.correct {
+    background-color: green;
+}
+
+.partial {
+    background-color: gold;
+}
+
+.wrong {
+    background-color: gray;
+}
+
+
+/* Общий стиль */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Контейнер для игры */
+#wordle-game, #four-pics-one-word-game {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+/* Вопрос */
+.word-question, .word-hint {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Поле ввода */
+.word-input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 18px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+/* Кнопки */
+.word-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.word-button:hover {
+    background-color: #45a049;
+}
+
+/* Сообщение */
+.word-message {
+    font-size: 18px;
+    color: #d9534f;
+    margin-top: 10px;
+}
+
+/* Блок с результатами */
+.word-results {
+    margin-top: 20px;
+}
+
+/* Ряды букв в Wordle */
+.word-row {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin: 5px 0;
+}
+
+/* Буквы */
+.word-letter {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    background: #ddd;
+}
+
+/* Цвета для Wordle */
+.correct {
+    background-color: #4CAF50; /* Зеленый - правильная буква и место */
+    color: white;
+}
+
+.partial {
+    background-color: #FFC107; /* Желтый - буква есть, но не там */
+    color: white;
+}
+
+.wrong {
+    background-color: #D9534F; /* Красный - буквы нет */
+    color: white;
+}
+
+/* 🔹 4 Фотки 1 Слово */
+
+/* Блок с изображениями */
+.images-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+/* Сами картинки */
+.game-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.game-image:hover {
+    transform: scale(1.05);
+}
+
+/* Радиокнопки */
+input[type="radio"] {
+    margin-right: 5px;
+}
+
+label {
+    font-size: 16px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+/* 🔹 Адаптация для мобильных устройств */
+@media (max-width: 500px) {
+    .word-letter {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 16px;
+    }
+    
+    .word-input {
+        font-size: 16px;
+    }
+
+    .word-button {
+        font-size: 16px;
+    }
+}
+
+
+/* Кнопка рейтинга */
+#rating-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #2edf13;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#rating-btn:hover {
+    background-color: #00b32a;
+}
+
+/* Форма рейтинга */
+#rating-form {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 120px;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+#rating-form input {
+    display: block;
+    width: 80%;
+    margin: 10px;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#rating-form button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 95%;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#rating-form button:hover {
+    background-color: #218838;
+}
+
+/* 📊 Увеличенная кнопка рейтинга */
+#rating-btn {
+    position: fixed;
+    bottom: 100px; /* Подняли выше */
+    right: 20px;
+    background-color: #09ff00;
+    color: white;
+    border: none;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#rating-btn:hover {
+    background-color: #e68900;
+    transform: scale(1.1);
+}
+
+/* 📊 Окно рейтинга во весь экран */
+#rating-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+#rating-list table {
+    width: 60%; /* Увеличиваем ширину таблицы */
+    max-width: 800px; /* Ограничиваем максимальную ширину */
+    border-collapse: collapse;
+    text-align: center;
+    background: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#rating-list h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#rating-list th, #rating-list td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    font-size: 18px;
+}
+
+#rating-list th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.images-container {
+    display: flex; /* Выстраиваем изображения в ряд */
+    justify-content: center; /* Выравниваем по центру */
+    gap: 15px; /* Добавляем отступы между изображениями */
+    flex-wrap: wrap; /* Позволяем переносить на новую строку при необходимости */
+    padding: 10px;
+}
+
+/* Стили для изображений */
+.game-image {
+    width: 150px; /* Фиксированная ширина */
+    height: 150px; /* Фиксированная высота */
+    object-fit: cover; /* Обрезаем изображение, чтобы не искажалось */
+    border-radius: 10px; /* Закругляем углы */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Добавляем тень для красоты */
+    transition: transform 0.3s ease-in-out; /* Анимация увеличения при наведении */
+}
+
+/* Анимация при наведении */
+.game-image:hover {
+    transform: scale(1.1); /* Немного увеличиваем */
+}
+
+
